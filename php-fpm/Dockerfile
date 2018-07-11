@@ -24,7 +24,7 @@ RUN "date"
 # install php extensions
 #RUN docker-php-ext-install -j$(nproc) bcmath iconv mcrypt
 #RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
-RUN docker-php-ext-install -j$(nproc) gd gmp intl opcache sockets zip curl pdo_mysql
+RUN docker-php-ext-install -j$(nproc) gd gmp intl opcache sockets zip curl pdo_mysql bcmath
 
 # add conf.d/php.ini
 ADD ./config/php.ini /usr/local/etc/php/conf.d/php.ini

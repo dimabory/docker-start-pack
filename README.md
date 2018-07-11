@@ -6,6 +6,8 @@ This [Docker Compose] powered development environment includes:
   * Nginx web server, serving php app
   * MySQL database
   * Composer
+  * **ELK bundle** (Elasticsearch, Logstash, Kibana)
+  * **RabbitMQ** messaging broker
 
 ## Installation
 
@@ -57,6 +59,29 @@ Additionally, PHP includes following extensions:
 
 Nginx 1.7 is installed with apt-get on the [debian:jessie] base image.
 
+### Elasticsearch, Logstash, Kibana (ELK)
+
+**Docker image** 
+
+*elk-docker* image documentation is available [here](http://elk-docker.readthedocs.io/).
+
+**Docs** 
+
+> All references refer to 6.2 version.
+
+- [Elasticsearch User Guide](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html)
+- [Logstash User Guide](https://www.elastic.co/guide/en/logstash/6.2/index.html)
+- [Kibana User Guide](https://www.elastic.co/guide/en/kibana/6.2/index.html)
+
+### RabbitMQ
+
+> RabbitMQ is an open source multi-protocol messaging broker. [See docker image](https://hub.docker.com/_/rabbitmq/).
+
+Official site with tutorials, api and full documentation is available by url: 
+https://www.rabbitmq.com/.
+
+Rabbitmq configuration can be found and changed in `/rabbitmq` folder. See `rabbitmq.config` and `rabbit.json` files, which allow to set up custom queues, exchanges, bindings and other stuff. By default it defines `logging.app` exchange and `logstash-app` queue. Be careful on changing it.
+
 ### Composer
 
 Composer is a dependency manager written in and for PHP. 
@@ -80,6 +105,16 @@ $ docker rmi $(docker images -q)
 # Remove unused data
 $ docker system prune
 ```
+
+## Troubleshooting
+
+> Elasticsearch uses a hybrid mmapfs / niofs directory by default to store its indices. The default operating system limits on mmap counts is likely to be too low, which may result in out of memory exceptions.
+
+On Linux, you can increase the limits by running the following command as root:
+
+`sysctl -w vm.max_map_count=262144`
+
+To set this value permanently, update the `vm.max_map_count` setting in `/etc/sysctl.conf`. To verify after rebooting, run `sysctl vm.max_map_count`.
 
 **How to run tests inside container?**
 
